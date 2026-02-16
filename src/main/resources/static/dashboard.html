@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turkcell Game+ Quest League</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --turkcell-yellow: #FFC900;
+            --turkcell-blue: #2855AC;
+            --turkcell-navy: #002855;
+            --bg-color: #F4F7FA;
+            --card-bg: #FFFFFF;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--turkcell-navy);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand span {
+            color: var(--turkcell-yellow);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            margin-bottom: 2rem;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            color: var(--turkcell-navy);
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .three-col-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid var(--turkcell-yellow);
+        }
+
+        .card.blue-accent {
+            border-top-color: var(--turkcell-blue);
+        }
+
+        .card.navy-accent {
+            border-top-color: var(--turkcell-navy);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--turkcell-navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .stat-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--turkcell-blue);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .leaderboard-list {
+            list-style: none;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-radius: 8px;
+        }
+
+        .leaderboard-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .rank {
+            width: 32px;
+            height: 32px;
+            background: var(--turkcell-navy);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-right: 15px;
+        }
+
+        .rank.top-1 {
+            background: #FFD700;
+            color: #333;
+        }
+
+        .rank.top-2 {
+            background: #C0C0C0;
+            color: #333;
+        }
+
+        .rank.top-3 {
+            background: #CD7F32;
+            color: #white;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .user-meta {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .points-badge {
+            background: rgba(40, 85, 172, 0.1);
+            color: var(--turkcell-blue);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .quest-item {
+            background: white;
+            border: 1px solid #eee;
+            border-left: 4px solid var(--turkcell-blue);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .quest-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .quest-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .quest-name {
+            font-weight: 600;
+            color: var(--turkcell-navy);
+        }
+
+        .quest-reward {
+            color: var(--turkcell-yellow);
+            font-weight: bold;
+            background: #333;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .quest-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background-color: white;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .form-select:focus {
+            border-color: var(--turkcell-blue);
+            box-shadow: 0 0 0 3px rgba(40, 85, 172, 0.1);
+        }
+
+        .badge-pill {
+            display: inline-block;
+            padding: 6px 16px;
+            margin: 4px;
+            background: var(--turkcell-blue);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading,
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        /* Notification Styles */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .notification-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+
+        .notification-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--turkcell-yellow);
+            color: var(--turkcell-navy);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--turkcell-navy);
+        }
+
+        .notification-popover {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 320px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .notification-popover.show {
+            display: block;
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .notification-item:hover {
+            background: #fafafa;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--turkcell-blue);
+        }
+
+        .notification-time {
+            color: #999;
+            font-weight: 400;
+            font-size: 0.75rem;
+        }
+
+        .notification-body {
+            font-size: 0.9rem;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--turkcell-yellow);">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                    <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                    <path
+                        d="M18 2h-6c-1.1 0-2 .9-2 2v12.55a2.44 2.44 0 0 0 .97 2.05l.33.24c.73.53 1.7.53 2.43 0l.33-.24a2.44 2.44 0 0 0 .97-2.05V4c0-1.1.9-2 2-2h6">
+                    </path>
+                </svg>
+                Game+ <span>Quest League</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <span style="font-size: 0.9rem; opacity: 0.8;">Admin Paneli</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="header-section">
+            <h1 class="header-title">Kontrol Paneli</h1>
+            <p class="header-subtitle">Görev, Puan, Rozet ve Liderlik Sistemi Yönetimi</p>
+        </header>
+
+        <!-- Top Stats Row -->
+        <div class="grid" style="grid-template-columns: 1fr;">
+            <div class="card navy-accent">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="9" y1="21" x2="9" y2="9"></line>
+                        </svg>
+                        Sistem Özeti
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="stats" class="stat-grid loading">Veriler Yükleniyor...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="three-col-grid">
+            <!-- Leaderboard Column -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                            <path d="M4 22h16"></path>
+                            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                            <path
+                                d="M18 2h-6c-1.1 0-2 .9-2 2v12.55a2.44 2.44 0 0 0 .97 2.05l.33.24c.73.53 1.7.53 2.43 0l.33-.24a2.44 2.44 0 0 0 .97-2.05V4c0-1.1.9-2 2-2h6">
+                            </path>
+                        </svg>
+                        Liderlik Tablosu
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div id="leaderboard" class="loading" style="padding: 20px;">Yükleniyor...</div>
+                </div>
+            </div>
+
+            <!-- Active Quests Column -->
+            <div class="card blue-accent">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="22" y1="12" x2="18" y2="12"></line>
+                            <line x1="6" y1="12" x2="2" y2="12"></line>
+                            <line x1="12" y1="6" x2="12" y2="2"></line>
+                            <line x1="12" y1="22" x2="12" y2="18"></line>
+                        </svg>
+                        Aktif Görevler
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="quests" class="loading">Yükleniyor...</div>
+                </div>
+            </div>
+
+            <!-- User Detail Column (Full Height) -->
+            <div class="card navy-accent">
+                <div class="card-header">
+                    <div class="card-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Kullanıcı Detayı
+                    </div>
+                </div>
+                <div class="card-body">
+                    <select id="userSelect" class="form-select">
+                        <option value="">Kullanıcı Seçiniz...</option>
+                    </select>
+                    <div id="userDetail" class="empty-state">
+                        <p style="margin-bottom: 20px;">Detayları görüntülemek için yukarıdan bir kullanıcı seçin.</p>
+                        <div style="font-size: 3rem; opacity: 0.2;">👤</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Move user list to a collapsed or secondary section if too long, or keep it in memory for the select box -->
+    <div style="display:none;" id="users-data-store"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+
+        async function loadStats() {
+            try {
+                const [users, quests] = await Promise.all([
+                    fetch(`${API_BASE}/users`).then(r => r.json()),
+                    fetch(`${API_BASE}/quests/active`).then(r => r.json())
+                ]);
+
+                // Calculate total points
+                const totalPoints = users.reduce((sum, u) => sum + (u.totalPoints || 0), 0);
+
+                document.getElementById('stats').innerHTML = `
+                    <div class="stat-item">
+                        <span class="stat-value">${users.length}</span>
+                        <span class="stat-label">Toplam Kullanıcı</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${quests.length}</span>
+                        <span class="stat-label">Aktif Görev</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${totalPoints.toLocaleString()}</span>
+                        <span class="stat-label">Toplam Puan</span>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('stats').innerHTML = '<div class="empty-state">İstatistikler yüklenemedi.</div>';
+                console.error(error);
+            }
+        }
+
+        async function loadLeaderboard() {
+            try {
+                const response = await fetch(`${API_BASE}/leaderboard?limit=10`);
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    document.getElementById('leaderboard').innerHTML = '<div class="empty-state">Henüz veri yok.</div>';
+                    return;
+                }
+
+                document.getElementById('leaderboard').innerHTML = '<ul class="leaderboard-list">' + data.map((item, index) => `
+                    <li class="leaderboard-item" onclick="loadUserDetail('${item.userId}')">
+                        <div class="rank ${index < 3 ? 'top-' + (index + 1) : ''}">${item.rank}</div>
+                        <div class="user-info">
+                            <span class="user-name">${item.user?.name || item.userId}</span>
+                            <span class="user-meta">${item.user?.city || ''} • ${item.user?.segment || ''}</span>
+                        </div>
+                        <div class="points-badge">${item.totalPoints} P</div>
+                    </li>
+                `).join('') + '</ul>';
+            } catch (error) {
+                document.getElementById('leaderboard').innerHTML = '<div class="empty-state">Sıralama yüklenemedi.</div>';
+            }
+        }
+
+        async function loadUsersForSelect() {
+            try {
+                const response = await fetch(`${API_BASE}/users`);
+                const users = await response.json();
+
+                const select = document.getElementById('userSelect');
+                select.innerHTML = '<option value="">Kullanıcı seçin...</option>' +
+                    users.map(u => `<option value="${u.userId}">${u.name || u.userId} (${u.totalPoints || 0} p)</option>`).join('');
+            } catch (error) {
+                console.error('Users load error', error);
+            }
+        }
+
+        async function loadQuests() {
+            try {
+                const response = await fetch(`${API_BASE}/quests/active`);
+                const quests = await response.json();
+
+                document.getElementById('quests').innerHTML = quests.map(quest => `
+                    <div class="quest-item">
+                        <div class="quest-header">
+                            <span class="quest-name">${quest.questName}</span>
+                            <span class="quest-reward">+${quest.rewardPoints}</span>
+                        </div>
+                        <div class="quest-meta">
+                            <span>${quest.questType}</span>
+                            <span>Öncelik: ${quest.priority}</span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 8px; font-style: italic;">
+                            ${quest.condition}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('quests').innerHTML = '<div class="empty-state">Görevler yüklenemedi.</div>';
+            }
+        }
+
+        function toggleNotifications() {
+            const popover = document.getElementById('notificationPopover');
+            if (popover) popover.classList.toggle('show');
+        }
+
+        // Close popover when clicking outside
+        document.addEventListener('click', function (event) {
+            const container = document.querySelector('.notification-wrapper');
+            const popover = document.getElementById('notificationPopover');
+            if (container && !container.contains(event.target) && popover && popover.classList.contains('show')) {
+                popover.classList.remove('show');
+            }
+        });
+
+        async function loadUserDetail(userId) {
+            if (!userId) userId = document.getElementById('userSelect').value;
+            if (!userId) return;
+
+            // Sync select box if called from leaderboard click
+            document.getElementById('userSelect').value = userId;
+
+            document.getElementById('userDetail').innerHTML = '<div class="loading">Kullanıcı bilgileri getiriliyor...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/users/${userId}`);
+                const user = await response.json();
+
+                // Prepare notifications
+                const notificationCount = user.notifications ? user.notifications.length : 0;
+                let notificationsHtml = '';
+                if (notificationCount > 0) {
+                    notificationsHtml = user.notifications.map(notif => `
+                        <div class="notification-item">
+                            <div class="notification-header">
+                                <span>${notif.channel}</span>
+                                <span class="notification-time">${notif.sentAt}</span>
+                            </div>
+                            <div class="notification-body">${notif.message}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    notificationsHtml = '<div class="notification-item" style="text-align: center; color: #999;">Henüz bildirim yok.</div>';
+                }
+
+                let html = `
+                    <div style="margin-bottom: 24px;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <h2 style="color: var(--turkcell-blue); margin-bottom: 4px;">${user.name || user.userId}</h2>
+                                <span class="badge-pill" style="background: #eee; color: #555; margin:0;">${user.city}</span>
+                                <span class="badge-pill" style="background: #eee; color: #555; margin:0;">${user.segment}</span>
+                            </div>
+                            
+                            <div class="notification-wrapper">
+                                <button class="notification-btn" onclick="toggleNotifications()" style="background: var(--turkcell-blue);">
+                                    🔔
+                                    ${notificationCount > 0 ? `<span class="notification-badge">${notificationCount}</span>` : ''}
+                                </button>
+                                <div id="notificationPopover" class="notification-popover">
+                                    <h4 style="padding: 12px; background: #f8f9fa; margin: 0; border-bottom: 1px solid #eee; font-size: 0.9rem;">Bildirimler</h4>
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        ${notificationsHtml}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Metrics Section
+                if (user.userState) {
+                    html += `
+                        <h4 style="color: var(--turkcell-navy); border-bottom: 2px solid var(--turkcell-yellow); padding-bottom: 8px; margin-bottom: 15px;">Güncel Performans</h4>
+                        <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 24px;">
+                            <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.loginCountToday}</span>
+                                <span class="stat-label">Bugün Giriş</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.playMinutesToday} dk</span>
+                                <span class="stat-label">Oyun Süresi</span>
+                            </div>
+                             <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.pvpWinsToday}</span>
+                                <span class="stat-label">PvP Galibiyet</span>
+                            </div>
+                             <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.loginStreakDays}</span>
+                                <span class="stat-label">Giriş Serisi</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Badges Section
+                if (user.badges && user.badges.length > 0) {
+                    html += `
+                        <h4 style="color: var(--turkcell-navy); border-bottom: 2px solid var(--turkcell-yellow); padding-bottom: 8px; margin-bottom: 15px;">Rozetler</h4>
+                        <div style="margin-bottom: 24px;">
+                            ${user.badges.map(b => `<span class="badge-pill">${b.badgeName || b.badgeId} <small>(Lvl ${b.level})</small></span>`).join('')}
+                        </div>
+                     `;
+                } else {
+                    html += `<div style="padding: 20px; text-align: center; color: #999; background: #fafafa; border-radius: 8px; margin-bottom: 20px;">Henüz rozet kazanılmadı.</div>`;
+                }
+
+                // Quest History
+                html += `<h4 style="color: var(--turkcell-navy); border-bottom: 2px solid var(--turkcell-yellow); padding-bottom: 8px; margin-bottom: 15px;">Son Görev Ödülleri</h4>`;
+
+                if (user.questAwards && user.questAwards.length > 0) {
+                    html += `<div style="max-height: 250px; overflow-y: auto;">`;
+                    user.questAwards.forEach(award => {
+                        html += `
+                            <div style="padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9rem;">
+                                <div style="display:flex; justify-content: space-between; font-weight: 600; color: #333;">
+                                    <span>${award.selectedQuestName || award.selectedQuest}</span>
+                                    <span style="color: var(--turkcell-blue);">+${award.rewardPoints}</span>
+                                </div>
+                                <div style="font-size: 0.75rem; color: #999; margin-top: 4px;">
+                                    ${award.asOfDate}
+                                    ${award.triggeredQuests && award.triggeredQuests.length > 0 ? ` • Tetiklenen: ${award.triggeredQuests.join(', ')}` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `<div style="padding: 20px; text-align: center; color: #999; background: #fafafa; border-radius: 8px;">Henüz görev tamamlanmadı.</div>`;
+                }
+
+                document.getElementById('userDetail').innerHTML = html;
+            } catch (error) {
+                console.error(error);
+                document.getElementById('userDetail').innerHTML = '<div class="empty-state">Kullanıcı verileri yüklenirken hata oluştu.</div>';
+            }
+        }
+
+        document.getElementById('userSelect').addEventListener('change', (e) => loadUserDetail(e.target.value));
+
+        // Initial Loads
+        loadStats();
+        loadLeaderboard();
+        loadUsersForSelect();
+        loadQuests();
+    </script>
+</body>
+
+</html>
