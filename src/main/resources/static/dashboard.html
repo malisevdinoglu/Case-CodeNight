@@ -670,13 +670,41 @@
                             <span>Öncelik: ${quest.priority}</span>
                         </div>
                         <div style="font-size: 0.85rem; color: #666; margin-top: 8px; font-style: italic;">
-                            ${quest.condition}
+                            ${formatCondition(quest.condition)}
                         </div>
                     </div>
                 `).join('');
             } catch (error) {
                 document.getElementById('quests').innerHTML = '<div class="empty-state">Görevler yüklenemedi.</div>';
             }
+        }
+
+        function formatCondition(condition) {
+            if (!condition) return '';
+
+            // Mapping technical conditions to user-friendly text
+            const mappings = {
+                'login_count_today >= 1': 'Bugün uygulamaya en az 1 kez giriş yap.',
+                'login_streak_days >= 3': '3 gün aralıksız giriş yap.',
+                'pvp_wins_today >= 3': 'Bugün Arena\'da 3 galibiyet al.',
+                'coop_minutes_today >= 60': 'Takım arkadaşlarınla 60 dakika zaman geçir.',
+                'play_minutes_today >= 45': 'Bugün toplam 45 dakika oyun oyna.',
+                'play_minutes_7d >= 600': 'Son 7 gün içinde toplam 600 dakika oyun oyna.',
+                'topup_try_7d >= 200': 'Son 7 gün içinde toplam 200 ₺ yükleme yap.'
+            };
+
+            // Return exact match if exists
+            if (mappings[condition]) return mappings[condition];
+
+            // Fallback: try to make it look a bit better if not in mapping
+            return condition
+                .replace(/_/g, ' ')
+                .replace('>=', 'en az')
+                .replace('>', 'daha fazla')
+                .replace('today', 'bugün')
+                .replace('count', 'sayısı')
+                .replace('minutes', 'dakika')
+                .replace('wins', 'galibiyet');
         }
 
         function toggleNotifications() {
@@ -768,6 +796,22 @@
                              <div class="stat-item">
                                 <span class="stat-value" style="font-size: 1.2rem;">${user.userState.loginStreakDays}</span>
                                 <span class="stat-label">Giriş Serisi</span>
+                            </div>
+                        </div>
+
+                        <h4 style="color: var(--turkcell-navy); border-bottom: 2px solid var(--turkcell-yellow); padding-bottom: 8px; margin-bottom: 15px;">Son 7 Gün Performansı</h4>
+                        <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 24px;">
+                            <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.logins7d}</span>
+                                <span class="stat-label">Toplam Giriş</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.playMinutes7d} dk</span>
+                                <span class="stat-label">Toplam Oyun</span>
+                            </div>
+                             <div class="stat-item">
+                                <span class="stat-value" style="font-size: 1.2rem;">${user.userState.topupTry7d} ₺</span>
+                                <span class="stat-label">Yükleme Denemesi</span>
                             </div>
                         </div>
                     `;

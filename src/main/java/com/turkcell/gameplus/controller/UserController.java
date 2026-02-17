@@ -55,8 +55,16 @@ public class UserController {
                                 .orElse(null);
 
                 // Get quest awards
-                List<QuestAward> questAwards =
+                // Get quest awards and deduplicate
+                List<QuestAward> allAwards =
                                 questAwardRepository.findByUserIdOrderByAsOfDateDesc(userId);
+
+                // Deduplicate based on unique key (QuestId + Date)
+                List<QuestAward> questAwards = allAwards.stream()
+                                .filter(com.turkcell.gameplus.util.DistinctByKey
+                                                .distinctByKey(qa -> qa.getSelectedQuestId() + "_"
+                                                                + qa.getAsOfDate()))
+                                .collect(Collectors.toList());
 
                 // Get badges
                 List<BadgeAward> badges = badgeService.getUserBadges(userId);
